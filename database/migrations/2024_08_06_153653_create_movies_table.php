@@ -14,9 +14,11 @@ return new class extends Migration
             $table->string('movie_image');
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
-            $table->integer('points')->default(0);
+            $table->integer('points_rental')->default(0);
+            $table->integer('points_required')->default(0);
             $table->integer('stock')->default(0);
             $table->string('category')->nullable();
+            $table->integer('status_movie')->default(1);
             $table->timestamps();
         });
     }
