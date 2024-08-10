@@ -27,8 +27,7 @@ class MovieResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('movie_image')
-                    ->image()
-                    ->required(),
+                    ->image(),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('price')
@@ -49,10 +48,8 @@ class MovieResource extends Resource
                     ->default(0),
                 Forms\Components\TextInput::make('category')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('status_movie')
-                    ->required()
-                    ->numeric()
-                    ->default(1),
+                Forms\Components\Toggle::make('status_movie')
+                    ->required(),
             ]);
     }
 
@@ -62,9 +59,7 @@ class MovieResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('movie_image')
-                ,
-                    // ->disk('public'),
+                Tables\Columns\ImageColumn::make('movie_image'),
                 Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable(),
@@ -79,9 +74,8 @@ class MovieResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status_movie')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\IconColumn::make('status_movie')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

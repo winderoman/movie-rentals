@@ -11,14 +11,14 @@ return new class extends Migration
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('movie_image');
+            $table->string('movie_image')->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
             $table->integer('points_rental')->default(0);
             $table->integer('points_required')->default(0);
             $table->integer('stock')->default(0);
             $table->string('category')->nullable();
-            $table->integer('status_movie')->default(1);
+            $table->boolean('status_movie')->default(1)->index();
             $table->timestamps();
         });
     }
