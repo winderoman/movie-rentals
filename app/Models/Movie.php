@@ -19,4 +19,8 @@ class Movie extends Model
         'category',
         'status_movie',
     ];
+
+    protected $casts = [
+        'category' => 'array',
+    ];
 }

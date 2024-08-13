@@ -12,6 +12,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Filters\TernaryFilter;
 
 class MovieResource extends Resource
 {
@@ -46,8 +50,26 @@ class MovieResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
-                Forms\Components\TextInput::make('category')
-                    ->maxLength(255),
+                Select::make('category')
+                    ->multiple()
+                    ->searchable()
+                    ->options([
+                        'accion' => 'Acción',
+                        'terror' => 'Terror',
+                        'suspenso' => 'Suspenso',
+                        'romantica' => 'Romantica',
+                        'aventura' => 'Aventura',
+                        'animada' => 'Animada',
+                        'ciencia ficcion' => 'Ciencia ficción',
+                        'drama' => 'Drama',
+                        'fantasia' => 'Fantasía',
+                        'comedia' => 'Comedia',
+                        'documental' => 'Documental',
+                        'musical' => 'Musical',
+                        'biografico' => 'Biográfico',
+                        'historico' => 'Histórico',
+                        'superheroes' => 'Superheroes',
+                    ]),
                 Forms\Components\Toggle::make('status_movie')
                     ->required(),
             ]);
@@ -86,10 +108,40 @@ class MovieResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Filter::make('status_movie')
+                    ->toggle()
+                    ->query(fn (Builder $query): Builder => $query->where('status_movie', true)),
+                SelectFilter::make('category')
+                    ->multiple()
+                    ->searchable()
+                    ->options([
+                        'accion' => 'Acción',
+                        'terror' => 'Terror',
+                        'suspenso' => 'Suspenso',
+                        'romantica' => 'Romantica',
+                        'aventura' => 'Aventura',
+                        'animada' => 'Animada',
+                        'ciencia ficcion' => 'Ciencia ficción',
+                        'drama' => 'Drama',
+                        'fantasia' => 'Fantasía',
+                        'comedia' => 'Comedia',
+                        'documental' => 'Documental',
+                        'musical' => 'Musical',
+                        'biografico' => 'Biográfico',
+                        'historico' => 'Histórico',
+                        'superheroes' => 'Superheroes',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->where(function ($query) use ($data) {
+                            foreach ($data as $category) {
+                                $query->orWhereJsonContains('category', $category);
+                            }
+                        });
+                    }), 
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
