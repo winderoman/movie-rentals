@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MovieResource\Pages;
-use App\Filament\Resources\MovieResource\RelationManagers;
 use App\Models\Movie;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,11 +10,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Forms\Components\Select;
-use Filament\Tables\Filters\TernaryFilter;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class MovieResource extends Resource
 {
@@ -70,8 +68,6 @@ class MovieResource extends Resource
                         'historico' => 'Histórico',
                         'superheroes' => 'Superheroes',
                     ]),
-                Forms\Components\Toggle::make('status_movie')
-                    ->required(),
             ]);
     }
 
@@ -137,7 +133,7 @@ class MovieResource extends Resource
                                 $query->orWhereJsonContains('category', $category);
                             }
                         });
-                    }), 
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -146,6 +142,7 @@ class MovieResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make(),
                 ]),
             ]);
     }
