@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
             $table->date('rental_date');
             $table->date('return_date')->nullable();
-            $table->enum('status', ['pending', 'returned', 'overdue']);
+            $table->decimal('total_price',10,2);
+            $table->enum('status', ['pending', 'returned', 'overdue'])->default('pending');
             $table->timestamps();
         });
     }
