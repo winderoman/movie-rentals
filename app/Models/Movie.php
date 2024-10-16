@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 class Movie extends Model
 {
     use HasFactory;
@@ -24,7 +23,5 @@ class Movie extends Model
         'category' => 'array',
     ];
 
-    public function details() : HasMany {
-        return $this->hasMany(DetailRental::class);
-    }
+    
 }
